@@ -1,0 +1,132 @@
+.App {
+    text-align: center;
+}
+
+.App-logo {
+    animation: App-logo-spin infinite 20s linear;
+    height: 80px;
+}
+
+.App-header {
+    background-color: #222;
+    height: 150px;
+    padding: 20px;
+    color: white;
+}
+
+.App-intro {
+    font-size: large;
+}
+
+@keyframes App-logo-spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.flex-container {
+    width: 100%;
+    height: 70vh;
+    display: flex;
+    justify-content: center;
+}
+
+.settings-panel {
+    width: 300px;
+    border: 1px solid black;
+    align-self: center;
+    text-align: center;
+}
+
+.settings-panel h2 {
+    justify-content: center;
+}
+
+.settings-panel p {
+    margin: 0 1.5em 1.5em;
+}
+
+.group {
+    position: relative;
+    width: 250px;
+    padding-left: 30px;
+    padding-bottom: 30px;
+}
+
+.group input         {
+    font-size:14px;
+    padding:10px 0 10px 0;
+    display:block;
+    width:100%;
+    border:none;
+    border-bottom:1px solid black;
+}
+
+.group input:focus     { outline:none; }
+
+.group label          {
+    color:#999;
+    font-size:15px;
+    font-weight:normal;
+    position:absolute;
+    pointer-events:none;
+    left:30px;
+    top:10px;
+    transition:0.2s ease all;
+}
+
+.group input:focus ~ label, input:valid ~ label     {
+    top:-20px;
+    font-size:14px;
+    color:#5264AE;
+}
+
+.bar  { position:relative; display:block; width:100%; }
+
+.bar:before, .bar:after   {
+    content:'';
+    height:2px;
+    width:0;
+    bottom:1px;
+    position:absolute;
+    background:#5264AE;
+    transition:0.2s ease all;
+}
+
+.bar:before {
+    left:50%;
+}
+.bar:after {
+    right:50%;
+}
+
+input:focus ~ .bar:before, input:focus ~ .bar:after {
+    width:50%;
+}
+
+
+
+/*
+.highlight {
+    position:absolute;
+    height:60%;
+    width:100%;
+    top:25%;
+    left:0;
+    pointer-events:none;
+    opacity:0.5;
+}
+
+!* active state *!
+input:focus ~ .highlight {
+    animation:inputHighlighter 0.3s ease;
+}
+
+!* ANIMATIONS ================ *!
+@keyframes inputHighlighter {
+    from  { background:#5264AE; }
+    to    { width:0; background:transparent; }
+}*/
