@@ -11,7 +11,7 @@ var nn = new NN({
             size: 15
         },
         hidden : {
-            size: 20
+            size: 18
         },
         output : {
             size: 10
