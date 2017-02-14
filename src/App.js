@@ -8,13 +8,13 @@ import {NN} from './core/network'
 var nn = new NN({
     layers: {
         input : {
-            size: 2
+            size: 15
         },
         hidden : {
-            size: 2
+            size: 20
         },
         output : {
-            size: 1
+            size: 10
         },
     }
 })

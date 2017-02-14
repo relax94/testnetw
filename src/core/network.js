@@ -87,7 +87,7 @@ export class Synapse {
     }
 
     adjustWeight() {
-        let newWeight = 0.7 * this.gradient + this.prevDelta * 0.3;
+        let newWeight = (0.1 * this.gradient) + (this.prevDelta * 0.9);
         this.prevDelta = newWeight;
         this.weight += newWeight;
     }
@@ -157,25 +157,46 @@ export class NN {
         }
 
 
-        this.train([[1, 0], [0, 1], [1, 1], [0, 0]], [0, 0, 1, 0], () => {
-            this.run([1, 0]);
-            this.run([0, 1]);
-            this.run([1, 1]);
-            this.run([0, 0]);
+        this.train([
+            [1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1],// 0
+            [0, 1, 1, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1], //1
+            [1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1], //2
+            [1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1], //3
+            [1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1], // 4
+            [1, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1],// 5
+            [1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1], //6
+            [1, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0],// 7
+            [1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1],// 8
+            [1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1]// 9*!/
+        ], [
+            [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 1, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 1, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 1, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 1]
+        ], () => {
+            this.run([1, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1]);
         });
+
     }
 
     train(trainInputSet, trainAnswers, fn) {
-        for (let epoch = 0; epoch <= 500000; epoch++) {
+        let epoch = 0;
+        while (epoch++ <= 40000) {
             for (let trainInputIndex = 0; trainInputIndex < trainInputSet.length; trainInputIndex++) {
                 let trainInputs = trainInputSet[trainInputIndex];
                 this.setTrainInput(trainInputs);
 
                 this.layers[NeuronType.HIDDEN].forEach(n => n.computeValue(SynapseType.INPUT_TO_HIDDEN));
-                this.layers[NeuronType.OUTPUT].forEach(n => {
+                this.layers[NeuronType.OUTPUT].forEach((n, index) => {
                     n.computeValue(SynapseType.HIDDEN_TO_OUTPUT);
-                    n.computeError(trainAnswers[trainInputIndex]);
-                    n.computeDelta(trainAnswers[trainInputIndex]);
+                    n.computeError(trainAnswers[trainInputIndex][index]);
+                    n.computeDelta(trainAnswers[trainInputIndex][index]);
                 });
 
                 this.synapses[SynapseType.HIDDEN_TO_OUTPUT].forEach(s => {
@@ -190,7 +211,7 @@ export class NN {
                 });
             }
 
-            if (epoch === 500000)
+            if (epoch === 40000)
                 fn();
         }
     }
@@ -198,9 +219,9 @@ export class NN {
     run(data) {
         this.setTrainInput(data);
         this.layers[NeuronType.HIDDEN].forEach(n => n.computeValue(SynapseType.INPUT_TO_HIDDEN));
-        this.layers[NeuronType.OUTPUT].forEach(n => {
+        this.layers[NeuronType.OUTPUT].forEach((n, index) => {
             n.computeValue(SynapseType.HIDDEN_TO_OUTPUT);
-            console.log(`${data[0]} xor ${data[1]} = ${n.getValue()}`);
+            console.log(`${index} = ${n.getValue()}`);
         });
     }
 
